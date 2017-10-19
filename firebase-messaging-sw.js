@@ -27,5 +27,5 @@
         notificationOptions);
 });*/
 self.addEventListener('push', (event) => {
-    console.log(event);
+    console.log(event.data.json());
 });
