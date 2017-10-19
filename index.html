@@ -33,8 +33,7 @@
         .catch(function(err) {
             console.log('Unable to get permission to notify.', err);
         });
-    var swRegistration = {};
-    navigator.serviceWorker.register('./firebase-messaging-sw.js').then((registration) => swRegistration = registration);
+    var swRegistration = navigator.serviceWorker.register('./firebase-messaging-sw.js').then((registration) => registration);
     messaging.useServiceWorker(swRegistration);
     messaging.getToken()
         .then(function(currentToken) {
