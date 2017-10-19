@@ -4,12 +4,10 @@
 	<meta charset="UTF-8">
 	<title>FCM Push Test</title>
 	<link rel="manifest" href="https://stuphy.github.io/FCMTest/manifest.json">
-	<!--<script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>-->
 
 	<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-messaging.js"></script>
 	<script>
-        // Initialize Firebase
         var config = {
             apiKey: "AIzaSyA0pzQc6lOIiV4B0Ob3G0SkKTP1yy3TgbM",
             authDomain: "xmpp-test-7ddd8.firebaseapp.com",
@@ -24,6 +22,7 @@
 <body>
 <script>
 	var messaging = firebase.messaging();
+	var fcmToken = '';
     navigator.serviceWorker.register('./firebase-messaging-sw.js')
         .then((registration) => {
         messaging.useServiceWorker(registration);
@@ -36,8 +35,7 @@
     	    });
     	messaging.getToken()
     	    .then(function(currentToken) {
-                sendTokenToServer(currentToken);
-    	        console.log('FCM Token', currentToken);
+    	        fcmToken = currentToken;
     	    })
     	    .catch(function(err) {
     	        console.log('An error occurred while retrieving token. ', err);
@@ -54,7 +52,32 @@
     	console.log('auth', auth);
     	console.log('API Key', config.apiKey);
     	console.log('Project Sender Id', config.messagingSenderId);
+    	console.log('FCM Push Token', fcmToken);
     });
+    function sendPush() {
+        var http = new XMLHttpRequest();
+        var url = "fcm.googleapis.com/fcm/send";
+        var body = {
+            notification: {
+                body: 'Hello!',
+				click_action: 'http://stuphy.github.io/FCMTest'
+			},
+			to: fcmToken
+		};
+
+        http.open("POST", url, true);
+
+        http.setRequestHeader("Content-type", "application/json");
+        http.setRequestHeader("Authorization", "key=AIzaSyA0pzQc6lOIiV4B0Ob3G0SkKTP1yy3TgbM");
+
+        http.onreadystatechange = function() {
+            if(http.readyState == 4 && http.status == 200) {
+                console.log(http.responseText);
+            }
+        };
+        http.send(JSON.stringify(body));
+	};
 </script>
+<button onclick="sendPush()">Send Push</button>
 </body>
 </html>
