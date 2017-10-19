@@ -38,7 +38,7 @@
         appendMessage(payload);
     });
     var swRegistration = {};
-    navigator.serviceWorker.register('./FCM/firebase-messaging-sw.js').then((registration) => swRegistration = registration);
+    navigator.serviceWorker.register('./firebase-messaging-sw.js').then((registration) => swRegistration = registration);
     messaging.useServiceWorker(swRegistration);
     messaging.getToken()
         .then(function(currentToken) {
