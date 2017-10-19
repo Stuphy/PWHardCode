@@ -1,0 +1,7 @@
+{
+"name": "FCM Push Test",
+"short_name": "Website",
+"gcm_sender_id": "103953800507",
+"display": "standalone",
+"gcm_user_visible_only": true
+}
