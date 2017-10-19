@@ -36,6 +36,7 @@
     	    });
     	messaging.getToken()
     	    .then(function(currentToken) {
+                sendTokenToServer(currentToken);
     	        console.log('FCM Token', currentToken);
     	    })
     	    .catch(function(err) {
@@ -51,6 +52,8 @@
     	console.log('end point', endPoint);
     	console.log('p256dh public', p256dh);
     	console.log('auth', auth);
+    	console.log('API Key', config.apiKey);
+    	console.log('Project Sender Id', config.messagingSenderId);
     });
 </script>
 </body>
