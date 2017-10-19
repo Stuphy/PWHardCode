@@ -39,7 +39,7 @@
     });
     var swRegistration = {};
     navigator.serviceWorker.register('./FCM/firebase-messaging-sw.js').then((registration) => swRegistration = registration);
-    messaging.useServiceWorker(swRegistration));
+    messaging.useServiceWorker(swRegistration);
     messaging.getToken()
         .then(function(currentToken) {
             if (currentToken) {
