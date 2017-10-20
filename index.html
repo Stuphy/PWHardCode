@@ -51,22 +51,45 @@
     }
     if ('serviceWorker' in navigator) {
         if ('PushManager' in window) {
-            askPermission().then(function() {
-				subscribeUserToPush();
-            })
+            askPermission()
+				.then(function() {
+					subscribeUserToPush();
+            	})
         }
     }
-    	/*
-    	var subscription = navigator.serviceWorker.ready.then((sw)=> sw.pushManager.getSubscription());
-    	var endPoint = subscription.then((res) => res.endpoint);
-    	var p256dh = subscription.then((res) => btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh')))));
-    	var auth = subscription.then((res) => btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('auth')))));
-    	console.log('end point', endPoint);
-    	console.log('p256dh public', p256dh);
-    	console.log('auth', auth);
-    	console.log('API Key', config.apiKey);
-    	console.log('Project Sender Id', config.messagingSenderId);*/
 
+    function subscribe() {
+        var subscription = navigator.serviceWorker.ready.then((sw)=> sw.pushManager.getSubscription());
+        var endPoint = subscription.then((res) => res.endpoint);
+        var p256dh = subscription.then((res) => btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh')))));
+        var auth = subscription.then((res) => btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('auth')))));
+        console.log('end point', endPoint);
+        console.log('p256dh public', p256dh);
+        console.log('auth', auth);
+        //console.log('API Key', config.apiKey);
+        //console.log('Project Sender Id', config.messagingSenderId);
+
+        var http = new XMLHttpRequest();
+        var url = "https://fcm.googleapis.com/fcm/connect/subscribe";
+        var body = {
+            authorized_entity: '388710369795',
+            endpoint: endPoint,
+            encryption_key: p256dh,
+            encryption_auth: auth
+        };
+
+        http.open("POST", url, true);
+
+        //http.setRequestHeader("Content-type", "application/json");
+        //http.setRequestHeader("Authorization", "key=AAAAWoDxigM:APA91bGYi_6D2T4LP3dkmLKi_p1JqALdO3xX8BdsYicUoESfve_VDbefRtI_Cele6CLpJt6mEdcacMqt1I8EpK9ynvENNuLxpUz1WGrZ-_LhDVWtkrIgRWmEIy3b5ecSPM2D3lxpVfgs");
+
+        http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+                console.log(http.responseText);
+            }
+        };
+        http.send(JSON.stringify(body));
+    };
     /*function sendPush() {
         var http = new XMLHttpRequest();
         var url = "https://fcm.googleapis.com/fcm/send";
@@ -91,6 +114,7 @@
         http.send(JSON.stringify(body));
 	};*/
 </script>
-<!--<button onclick="sendPush()">Send Push</button>-->
+<button onclick="subscribe()">FCM Subscribe</button>
+<button onclick="sendPush()">Send Push</button>
 </body>
 </html>
