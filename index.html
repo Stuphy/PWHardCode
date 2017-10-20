@@ -95,7 +95,7 @@
         	http.onreadystatechange = function () {
         	    if (http.readyState == 4 && http.status == 200) {
         	        console.log(http);
-        	        fcmToken = http.response.token;
+        	        fcmToken = JSON.parse(http.response);
         	    }
         	};
         	http.send(JSON.stringify(body));
