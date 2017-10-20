@@ -63,35 +63,40 @@
         var endPoint = '';
         var p256dh = '';
         var auth = '';
-		subscription.then((res) => endPoint = res.endpoint);
-        subscription.then((res) => p256dh = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh')))));
-        subscription.then((res) => auth = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('auth')))));
-        console.log('end point', endPoint);
-        console.log('p256dh public', p256dh);
-        console.log('auth', auth);
-        //console.log('API Key', config.apiKey);
-        //console.log('Project Sender Id', config.messagingSenderId);
+        subscription
+			.then(function(res) {
+            endPoint = res.endpoint;
+            p256dh = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh')))));
+        	auth = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('auth')))));
+		})
+		.then(function() {
+        	console.log('end point', endPoint);
+        	console.log('p256dh public', p256dh);
+        	console.log('auth', auth);
+        	//console.log('API Key', config.apiKey);
+        	//console.log('Project Sender Id', config.messagingSenderId);
 
-        var http = new XMLHttpRequest();
-        var url = "https://fcm.googleapis.com/fcm/connect/subscribe";
-        var body = {
-            authorized_entity: '388710369795',
-            endpoint: endPoint,
-            encryption_key: p256dh,
-            encryption_auth: auth
-        };
+        	var http = new XMLHttpRequest();
+        	var url = "https://fcm.googleapis.com/fcm/connect/subscribe";
+        	var body = {
+        	    authorized_entity: '388710369795',
+        	    endpoint: endPoint,
+        	    encryption_key: p256dh,
+        	    encryption_auth: auth
+        	};
 
-        http.open("POST", url, true);
+        	http.open("POST", url, true);
 
-        //http.setRequestHeader("Content-type", "application/json");
-        //http.setRequestHeader("Authorization", "key=AAAAWoDxigM:APA91bGYi_6D2T4LP3dkmLKi_p1JqALdO3xX8BdsYicUoESfve_VDbefRtI_Cele6CLpJt6mEdcacMqt1I8EpK9ynvENNuLxpUz1WGrZ-_LhDVWtkrIgRWmEIy3b5ecSPM2D3lxpVfgs");
+        	//http.setRequestHeader("Content-type", "application/json");
+        	//http.setRequestHeader("Authorization", "key=AAAAWoDxigM:APA91bGYi_6D2T4LP3dkmLKi_p1JqALdO3xX8BdsYicUoESfve_VDbefRtI_Cele6CLpJt6mEdcacMqt1I8EpK9ynvENNuLxpUz1WGrZ-_LhDVWtkrIgRWmEIy3b5ecSPM2D3lxpVfgs");
 
-        http.onreadystatechange = function () {
-            if (http.readyState == 4 && http.status == 200) {
-                console.log(http.responseText);
-            }
-        };
-        http.send(JSON.stringify(body));
+        	http.onreadystatechange = function () {
+        	    if (http.readyState == 4 && http.status == 200) {
+        	        console.log(http.responseText);
+        	    }
+        	};
+        	http.send(JSON.stringify(body));
+		});
     };
     /*function sendPush() {
         var http = new XMLHttpRequest();
