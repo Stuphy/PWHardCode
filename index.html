@@ -60,9 +60,12 @@
 
     function subscribe() {
         var subscription = navigator.serviceWorker.ready.then((sw)=> sw.pushManager.getSubscription());
-        var endPoint = subscription.then((res) => res.endpoint);
-        var p256dh = subscription.then((res) => btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh')))));
-        var auth = subscription.then((res) => btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('auth')))));
+        var endPoint = '';
+        var p256dh = '';
+        var auth = '';
+		subscription.then((res) => endPoint = res.endpoint);
+        subscription.then((res) => p256dh = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh')))));
+        subscription.then((res) => auth = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('auth')))));
         console.log('end point', endPoint);
         console.log('p256dh public', p256dh);
         console.log('auth', auth);
