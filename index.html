@@ -19,7 +19,7 @@
 </head>
 <body>
 <script>
-	var fcmToken = '';
+	var fcmResponse = '';
 
 	function askPermission() {
         return new Promise(function(resolve, reject) {
@@ -95,14 +95,14 @@
         	http.onreadystatechange = function () {
         	    if (http.readyState == 4 && http.status == 200) {
         	        console.log(http);
-        	        fcmToken = JSON.parse(http.response);
+        	        fcmResponse = JSON.parse(http.response);
         	    }
         	};
         	http.send(JSON.stringify(body));
 		});
     };
     function sendPush() {
-        console.log(fcmToken);
+        console.log(fcmResponse);
         var http = new XMLHttpRequest();
         var url = "https://fcm.googleapis.com/fcm/send";
         var body = {
@@ -110,7 +110,7 @@
                 body: 'Hello!',
 				click_action: 'http://stuphy.github.io/FCMTest'
 			},
-			to: fcmToken
+			to: fcmToken.token
 		};
 
         http.open("POST", url, true);
