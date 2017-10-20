@@ -66,7 +66,7 @@
         subscription
 			.then(function(res) {
             endPoint = res.endpoint;
-            p256dh = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh')))));
+            p256dh = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('p256dh'))));
         	auth = btoa(String.fromCharCode.apply(String, new Uint8Array(res.getKey('auth')))));
 		})
 		.then(function() {
