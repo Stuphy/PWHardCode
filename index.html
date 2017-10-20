@@ -93,12 +93,14 @@
         	http.onreadystatechange = function () {
         	    if (http.readyState == 4 && http.status == 200) {
         	        console.log(http.responseText);
+        	        console.log(http);
         	    }
         	};
         	http.send(JSON.stringify(body));
 		});
     };
-    /*function sendPush() {
+    function sendPush() {
+        var token = 'czIL_l-eq2I:APA91bEwtPzt-smJwy0Jwd5WVOW7uF703I0SsD11LbvlZRegpInDB--Vs5PFahKv7uJsgLfjQh8SWvOIwTwnSDXRiSh1HSkH1Sq8OOFx__IoGxNoor9rIgotWZtMMUs4cKAox0Y34rR_';
         var http = new XMLHttpRequest();
         var url = "https://fcm.googleapis.com/fcm/send";
         var body = {
@@ -106,7 +108,7 @@
                 body: 'Hello!',
 				click_action: 'http://stuphy.github.io/FCMTest'
 			},
-			to: fcmToken
+			to: token
 		};
 
         http.open("POST", url, true);
