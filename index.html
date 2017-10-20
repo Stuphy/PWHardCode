@@ -19,7 +19,9 @@
 </head>
 <body>
 <script>
-    function askPermission() {
+	var fcmToken = '';
+
+	function askPermission() {
         return new Promise(function(resolve, reject) {
             const permissionResult = Notification.requestPermission(function(result) {
                 resolve(result);
@@ -92,15 +94,15 @@
 
         	http.onreadystatechange = function () {
         	    if (http.readyState == 4 && http.status == 200) {
-        	        console.log(http.responseText);
         	        console.log(http);
+        	        fcmToken = http.response.token;
         	    }
         	};
         	http.send(JSON.stringify(body));
 		});
     };
     function sendPush() {
-        var token = 'czIL_l-eq2I:APA91bEwtPzt-smJwy0Jwd5WVOW7uF703I0SsD11LbvlZRegpInDB--Vs5PFahKv7uJsgLfjQh8SWvOIwTwnSDXRiSh1HSkH1Sq8OOFx__IoGxNoor9rIgotWZtMMUs4cKAox0Y34rR_';
+        console.log(fcmToken);
         var http = new XMLHttpRequest();
         var url = "https://fcm.googleapis.com/fcm/send";
         var body = {
@@ -108,7 +110,7 @@
                 body: 'Hello!',
 				click_action: 'http://stuphy.github.io/FCMTest'
 			},
-			to: token
+			to: fcmToken
 		};
 
         http.open("POST", url, true);
