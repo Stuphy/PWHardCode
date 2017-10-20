@@ -51,9 +51,8 @@
     }
     if ('serviceWorker' in navigator) {
         if ('PushManager' in window) {
-            askPermission().then(function(result) {
-                console.log(result);
-                //subscribeUserToPush();
+            askPermission().then(function() {
+				subscribeUserToPush();
             })
         }
     }
