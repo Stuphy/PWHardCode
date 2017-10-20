@@ -3,11 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>FCM Push Test</title>
-	<link rel="manifest" href="https://stuphy.github.io/FCMTest/manifest.json">
+	<link rel="manifest" href="https://stuphy.github.io/PWHardCode/manifest.json">
 
-	<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-messaging.js"></script>
-	<script>
+	<!--<script>
         var config = {
             apiKey: "AIzaSyA0pzQc6lOIiV4B0Ob3G0SkKTP1yy3TgbM",
             authDomain: "xmpp-test-7ddd8.firebaseapp.com",
@@ -17,13 +15,60 @@
             messagingSenderId: "388710369795"
         };
         firebase.initializeApp(config);
-	</script>
+	</script>-->
 </head>
 <body>
 <script>
-	var messaging = firebase.messaging();
-	var fcmToken = '';
-    navigator.serviceWorker.register('./firebase-messaging-sw.js')
+    function registerServiceWorker() {
+        return navigator.serviceWorker.register('./firebase-messaging-sw.js')
+            .then(function(registration) {
+                console.log('Service worker successfully registered.');
+                return registration;
+            })
+            .catch(function(err) {
+                console.error('Unable to register service worker.', err);
+            });
+    }
+    function askPermission() {
+        return new Promise(function(resolve, reject) {
+            const permissionResult = Notification.requestPermission(function(result) {
+                resolve(result);
+            });
+
+            if (permissionResult) {
+                permissionResult.then(resolve, reject);
+            }
+        })
+            .then(function(permissionResult) {
+                if (permissionResult !== 'granted') {
+                    throw new Error('We weren\'t granted permission.');
+                }
+            });
+    }
+    function subscribeUserToPush() {
+        return navigator.serviceWorker.register('service-worker.js')
+            .then(function(registration) {
+                const subscribeOptions = {
+                    userVisibleOnly: true
+                    /*applicationServerKey: urlBase64ToUint8Array(
+                        'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
+                    )*/
+                };
+
+                return registration.pushManager.subscribe(subscribeOptions);
+            })
+            .then(function(pushSubscription) {
+                console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+                return pushSubscription;
+            });
+    }
+    if ('serviceWorker' in navigator) {
+        if ('PushManager' in window) {
+            var SWRegistration = registerServiceWorker();
+			console.log(SWRegistration);
+        }
+    }
+    /*avigator.serviceWorker.register('./firebase-messaging-sw.js')
         .then((registration) => {
         messaging.useServiceWorker(registration);
     	messaging.requestPermission()
