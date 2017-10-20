@@ -2,7 +2,6 @@
 "name": "PW hardcode ID Test",
 "short_name": "Website",
   "gcm_sender_id": "388710369795",
-"fcm_sender_id": "103953800507",
 "display": "standalone",
 "gcm_user_visible_only": true
 }
